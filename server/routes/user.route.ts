@@ -5,6 +5,7 @@ import {
   loginUser,
   logout,
   updateAccessToken,
+  getUserinfo,
 } from "../controllers/user.controller";
 import { isAuthenticated } from "../middleware/auth";
 
@@ -19,5 +20,7 @@ userRouter.post("/login", loginUser);
 userRouter.get("/logout", isAuthenticated, logout);
 
 userRouter.get("/refresh", updateAccessToken);
+
+userRouter.get("/me", isAuthenticated, getUserinfo);
 
 export default userRouter;
