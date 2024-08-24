@@ -286,3 +286,83 @@ export const addAnswer = CatchAsyncError(
     }
   }
 );
+
+// add review in course
+
+interface IAddReviewData {
+  review: string;
+  courseId: string;
+  rating: string;
+  userId: string;
+}
+
+export const addReview = CatchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userCourseList = req.user?.courses;
+      const courseId = req.params.id;
+
+      // check if courseId already in userCourseList based on _id
+      const courseExist = userCourseList?.some(
+        (course: any) => course._id.toString() === courseId.toString()
+      );
+
+      if (!courseExist) {
+        return next(
+          new ErrorHandler("You are not eligible to access this course", 500)
+        );
+      }
+
+      const course = await CourseModel.findById(courseId);
+
+      const { review, rating } = req.body as IAddReviewData;
+
+      const reviewData: any = {
+        user: req.user,
+        rating,
+        comment: review,
+      };
+
+      course?.reviews.push(reviewData);
+
+      let avg = 0;
+
+      course?.reviews.forEach((rev: any) => {
+        avg += rev.rating;
+      });
+
+      if (course) course.ratings = avg / course?.reviews.length; // one example we have 2 reviews one is 5 and is4 so math working like this  = 9/2 = 4.5rating
+
+      await course?.save();
+
+      const notification = {
+        title: "New Review Received",
+        message: `${req.user?.name} jas given a review in ${course?.name}`,
+      };
+
+      //  create notification
+
+      res.status(200).json({ success: true, course });
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  }
+);
+
+// add reply in review
+
+interface IAddReviewData{
+comment :string;
+courseId:string;
+reviewId:string
+}
+
+export const addReplyToReview = CatchAsyncError(async(req:Request,:\,res:Response,next:NextFunction)=>{
+  try {
+    const {comment,courseId,reviewId} = req.body as IAddReviewData
+const course = await
+    const
+  } catch (error) {
+    
+  }
+})
