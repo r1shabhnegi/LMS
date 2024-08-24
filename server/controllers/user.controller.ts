@@ -192,7 +192,6 @@ export const updateAccessToken = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const refresh_token = req.cookies.refresh_token as string;
-      console.log("refreshToken-", refresh_token);
       const decoded = jwt.verify(
         refresh_token,
         process.env.REFRESH_TOKEN as string
