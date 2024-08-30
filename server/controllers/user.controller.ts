@@ -6,7 +6,6 @@ import jwt, { JwtPayload, Secret } from "jsonwebtoken";
 import ejs from "ejs";
 import path from "path";
 import sendMail from "../utils/sendMails";
-import { access } from "fs";
 import {
   accessTokenOptions,
   refreshTokenOptions,
@@ -69,7 +68,7 @@ export const registrationUser = CatchAsyncError(
         return next(new ErrorHandler(error.message, 400));
       }
     } catch (error: any) {
-      return next(new ErrorHandler(error.message, 400));
+      return next(new ErrorHandler(error.message, 500));
     }
   }
 );
