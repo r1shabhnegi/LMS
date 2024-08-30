@@ -7,7 +7,7 @@ import CourseModel from "../models/course.model";
 import path from "path";
 import ejs from "ejs";
 import sendMail from "../utils/sendMails";
-import NotificationModel from "../models/notificationModel";
+import NotificationModel from "../models/notification.model";
 import { newOrder } from "../services/order.service";
 
 // create order
@@ -19,10 +19,8 @@ export const createOrder = CatchAsyncError(
       const user = await userModel.findById(req.user?._id);
 
       const courseExistInUser = user?.courses.some(
-        (course: any) => course._id.toString() === courseId
+        (course: any) => course.courseId.toString() === courseId
       );
-
-      console.log("courseExistInUser-", courseExistInUser);
 
       if (courseExistInUser) {
         return next(
@@ -41,7 +39,7 @@ export const createOrder = CatchAsyncError(
         userId: user?._id,
         payment_info,
       };
-      console.log("data-", data);
+
       const mailData: any = {
         order: {
           _id: course._id.toString().slice(0, 6),
@@ -54,7 +52,6 @@ export const createOrder = CatchAsyncError(
           }),
         },
       };
-      console.log("mailData-", mailData);
 
       // const html = await ejs.renderFile(
       //   path.join(__dirname, "../mails/order-confirmation.ejs", mailData)
@@ -77,16 +74,16 @@ export const createOrder = CatchAsyncError(
 
       await user?.save();
 
+      course.purchased = (course.purchased || 0) + 1;
+
+      await course?.save();
+
       await NotificationModel.create({
         user: user?._id,
         title: "New Order",
         message: `You have a new order from ${course?.name}`,
       });
-      if (course.purchased) {
-        course.purchased += 1;
-      }
 
-      await course.save();
       newOrder(data, res, next);
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
