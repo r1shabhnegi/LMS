@@ -6,6 +6,7 @@ import { CatchAsyncError } from "../middleware/catchAsyncErrors";
 
 import ErrorHandler from "../utils/ErrorHandler";
 import cron from "node-cron";
+import { getAllUsersService } from "../services/user.service";
 // get all notifications -- only for admin
 export const getNotification = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
