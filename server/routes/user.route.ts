@@ -12,6 +12,7 @@ import {
   updateAvatar,
   getAllUsers,
   updateUserRole,
+  deleteUser,
 } from "../controllers/user.controller";
 import { authorizeRoles, isAuthenticated } from "../middleware/auth";
 
@@ -43,11 +44,19 @@ userRouter.get(
   authorizeRoles("admin"),
   getAllUsers
 );
+
 userRouter.put(
   "/update-user",
   isAuthenticated,
   authorizeRoles("admin"),
   updateUserRole
+);
+
+userRouter.put(
+  "/delete-user/:id",
+  isAuthenticated,
+  authorizeRoles("admin"),
+  deleteUser
 );
 
 export default userRouter;
