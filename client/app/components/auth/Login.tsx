@@ -5,13 +5,16 @@ import {
   AiOutlineEyeInvisible,
   AiFillGithub,
 } from "react-icons/ai";
-
 import { FcGoogle } from "react-icons/fc";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { styles } from "@/app/styles/style";
+import { useLoginMutation } from "@/redux/features/auth/authApi";
+import toast from "react-hot-toast";
+import { signIn } from "next-auth/react";
 
 type Props = {
   setRoute: (route: string) => void;
+  setOpen: (open: boolean) => void;
 };
 
 const schema = Yup.object().shape({
@@ -21,16 +24,32 @@ const schema = Yup.object().shape({
   password: Yup.string().required("Please enter your password").min(6),
 });
 
-const Login: FC<Props> = ({ setRoute }) => {
+const Login: FC<Props> = ({ setRoute, setOpen }) => {
   const [show, setShow] = useState(false);
+
+  const [login, { isLoading, isSuccess, isError, error, data }] =
+    useLoginMutation();
 
   const formik = useFormik({
     initialValues: { email: "", password: "" },
     validationSchema: schema,
     onSubmit: async ({ email, password }) => {
-      console.log(email, password);
+      await login({ email, password });
     },
   });
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Login successfully");
+      setOpen(false);
+    }
+    if (error) {
+      if ("data" in error) {
+        const errorData = error as any;
+        toast.error(errorData.data.message);
+      }
+    }
+  }, [isSuccess, error]);
 
   const { errors, touched, values, handleChange, handleSubmit } = formik;
   return (
@@ -98,10 +117,12 @@ const Login: FC<Props> = ({ setRoute }) => {
           <FcGoogle
             size={30}
             className='cursor-pointer ml-2'
+            onClick={() => signIn("google")}
           />
           <AiFillGithub
             size={30}
             className='cursor-pointer ml-2'
+            onClick={() => signIn("github  ")}
           />
         </div>
         <h5 className='text-center pt-4 font-Poppins text-[14px]'>

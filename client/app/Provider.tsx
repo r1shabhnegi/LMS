@@ -5,6 +5,6 @@ import { store } from "@/redux/store";
 interface ProviderProps {
   children: ReactNode;
 }
-export const Providers = ({ children }: ProviderProps) => {
+export const Providers: FC<ProviderProps> = ({ children }) => {
   return <Provider store={store}>{children}</Provider>;
 };
