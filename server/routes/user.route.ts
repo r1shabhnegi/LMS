@@ -36,7 +36,7 @@ userRouter.put("/update-user-info", isAuthenticated, updateUserInfo);
 
 userRouter.put("/update-password", isAuthenticated, updatePassword);
 
-userRouter.put("update-avatar", isAuthenticated, updateAvatar);
+userRouter.put("/update-avatar", isAuthenticated, updateAvatar);
 
 userRouter.get(
   "/get-users",
