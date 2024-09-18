@@ -54,10 +54,7 @@ const Profile: FC<Props> = ({ user }) => {
       )}
       {active === 2 && (
         <div className='w-full h-full bg-transparent mt-[80px]'>
-          <ChangePassword
-            avatar={avatar}
-            user={user}
-          />
+          <ChangePassword />
         </div>
       )}
     </div>
