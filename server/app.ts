@@ -11,7 +11,8 @@ import notificationRouter from "./routes/notification.route";
 import analyticsRouter from "./routes/analytics.route";
 import layoutRouter from "./routes/layout.route";
 // body parser
-app.use(express.json({ limit: "50mb" }));
+app.use(express.json({ limit: "1000mb" }));
+// app.use(express.json({}));
 
 // cookie parser
 app.use(cookieParser());
