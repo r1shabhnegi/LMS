@@ -1,17 +1,20 @@
-import React from "react";
+import React, { FC, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box, Button } from "@mui/material";
 import { AiOutlineDelete, AiOutlineMail } from "react-icons/ai";
 import { useTheme } from "next-themes";
-import { FiEdit2 } from "react-icons/fi";
-import { useGetAllCoursesQuery } from "@/redux/features/courses/coursesApi";
 import Loader from "../Loader/Loader";
 import { format } from "timeago.js";
 import { useGetAllUsersQuery } from "@/redux/features/user/userApi";
-import Link from "next/link";
+import { styles } from "@/app/styles/style";
 
-const AllUsers = () => {
+type Props = {
+  isTeam: boolean;
+};
+
+const AllUsers: FC<Props> = ({ isTeam }) => {
   const { theme } = useTheme();
+  const [active, setActive] = useState(false);
   const { isLoading, data, error } = useGetAllUsersQuery({});
   const columns = [
     { field: "id", headerName: "ID", flex: 0.3 },
@@ -67,7 +70,23 @@ const AllUsers = () => {
     //     created_at: "12/12/12",
     //   },
   ];
-  {
+
+  if (isTeam) {
+    const newData =
+      data && data.users.filter((item: any) => item.role === "admin");
+
+    newData &&
+      newData.forEach((item: any) => {
+        rows.push({
+          id: item._id,
+          name: item.name,
+          courses: item.courses,
+          role: item.role,
+          email: item.email,
+          created_at: format(item.createdAt),
+        });
+      });
+  } else {
     data &&
       data.users.forEach((item: any) => {
         rows.push({
@@ -81,12 +100,22 @@ const AllUsers = () => {
       });
   }
 
+  {
+  }
+
   return (
     <div className='mt-[120px]'>
-      <Box m='20px'>
-        {isLoading ? (
-          <Loader />
-        ) : (
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <Box m='20px'>
+          <div className='w-full flex justify-end'>
+            <div
+              className={`${styles.button} !h-[35px] !w-[200px] dark:bg-[#57c7a3] dark:border-[#ffffff6c]`}
+              onClick={() => setActive(!active)}>
+              Add New Member
+            </div>
+          </div>
           <Box
             m='40px 0 0 0'
             height='80vh'
@@ -156,8 +185,8 @@ const AllUsers = () => {
               columns={columns}
             />
           </Box>
-        )}
-      </Box>
+        </Box>
+      )}
     </div>
   );
 };
