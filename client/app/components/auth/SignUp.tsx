@@ -58,6 +58,7 @@ const SignUp: FC<Props> = ({ setRoute }) => {
   });
 
   const { errors, touched, values, handleChange, handleSubmit } = formik;
+
   return (
     <div className='w-full'>
       <h1 className={`${styles.title}`}>join to ELearning</h1>

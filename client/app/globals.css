@@ -107,3 +107,8 @@ body {
     transform: translate(0);
   }
 }
+
+select option {
+  -webkit-appearance: none;
+  appearance: none;
+}

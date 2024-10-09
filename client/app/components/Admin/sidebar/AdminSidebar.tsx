@@ -259,7 +259,7 @@ const Sidebar = () => {
 
             <Item
               title='Courses Analytics'
-              to='/admin/course-analytics'
+              to='/admin/courses-analytics'
               icon={<BarChartOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -281,20 +281,20 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
 
-            <Typography
+            {/* <Typography
               variant='h5'
               sx={{ m: "15px 0 5px 20x" }}
               className='!item-[18px] text-black dark:text-[#ffffffc1] capitalize !font-[400]'>
               {!isCollapsed && "Extras"}
-            </Typography>
+            </Typography> */}
 
-            <Item
+            {/* <Item
               title='Settings'
               to='/admin/settings'
               icon={<SettingsIcon />}
               selected={selected}
               setSelected={setSelected}
-            />
+            /> */}
           </Box>
         </Menu>
       </ProSidebar>

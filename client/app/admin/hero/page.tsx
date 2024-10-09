@@ -1,14 +1,14 @@
 "use client";
+import DashboardHero from "@/app/components/Admin/DashboardHero";
 
 import AdminProtected from "@/app/hooks/adminProtected";
 import Heading from "@/app/utils/Heading";
+import React from "react";
 import AdminSidebar from "@/app/components/Admin/sidebar/AdminSidebar";
-import DashboardHero from "@/app/components/Admin/DashboardHero";
-import AllUsers from "@/app/components/Admin/AllUsers";
-import { FC } from "react";
 
+import EditHero from "@/app/components/Admin/Customization/EditHero";
 type Props = {};
-const Page: FC<Props> = () => {
+const Page = (props: Props) => {
   return (
     <div>
       <AdminProtected>
@@ -23,7 +23,7 @@ const Page: FC<Props> = () => {
           </div>
           <div className='ml-5 w-[85%]'>
             <DashboardHero />
-            <AllUsers />
+            <EditHero />
           </div>
         </div>
       </AdminProtected>

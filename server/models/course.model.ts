@@ -22,7 +22,7 @@ interface ICourseData extends Document {
   title: string;
   description: string;
   videoUrl: string;
-  // videoThumbnail: object;
+  videoThumbnail: object;
   videoSection: string;
   videoLength: number;
   videoPlayer: string;
@@ -35,6 +35,7 @@ interface ICourse extends Document {
   _id: string;
   name: string;
   description?: string;
+  categories: string;
   price: number;
   estimatedPrice?: number;
   thumbnail: object;
@@ -89,6 +90,10 @@ const courseSchema = new Schema<ICourse>(
       required: true,
     },
     description: {
+      type: String,
+      required: true,
+    },
+    categories: {
       type: String,
       required: true,
     },

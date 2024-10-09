@@ -4,8 +4,9 @@ import AdminSidebar from "@/app/components/Admin/sidebar/AdminSidebar";
 import Heading from "@/app/utils/Heading";
 import CreateCourse from "@/app/components/Admin/Course/CreateCourse";
 import DashboardHeader from "@/app/components/Admin/DashboardHeader";
-
-const Page = () => {
+import EditCourse from "@/app/components/Admin/Course/EditCourse";
+const Page = ({ params }: any) => {
+  const id = params?.id;
   return (
     <div>
       <Heading
@@ -19,7 +20,8 @@ const Page = () => {
         </div>
         <div className='ml-5 w-[85%]'>
           <DashboardHeader />
-          <CreateCourse />
+          {/* <CreateCourse /> */}
+          <EditCourse id={id} />
         </div>
       </div>
     </div>

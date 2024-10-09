@@ -1,12 +1,18 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box, Button } from "@mui/material";
 import { AiOutlineDelete, AiOutlineMail } from "react-icons/ai";
 import { useTheme } from "next-themes";
 import Loader from "../Loader/Loader";
 import { format } from "timeago.js";
-import { useGetAllUsersQuery } from "@/redux/features/user/userApi";
+import {
+  useDeleteUserMutation,
+  useGetAllUsersQuery,
+} from "@/redux/features/user/userApi";
 import { styles } from "@/app/styles/style";
+import CustomModal from "@/app/utils/CustomModal";
+import AddMemberModal from "@/app/components/Admin/AddMemberModal";
+import toast from "react-hot-toast";
 
 type Props = {
   isTeam: boolean;
@@ -14,8 +20,24 @@ type Props = {
 
 const AllUsers: FC<Props> = ({ isTeam }) => {
   const { theme } = useTheme();
-  const [active, setActive] = useState(false);
-  const { isLoading, data, error } = useGetAllUsersQuery({});
+  const [open, setOpen] = useState(false);
+  const { isLoading, data, error, refetch } = useGetAllUsersQuery(
+    {},
+    { refetchOnMountOrArgChange: true }
+  );
+  const [deleteUser, { isSuccess, error: deleteUserError }] =
+    useDeleteUserMutation();
+  useEffect(() => {
+    if (isSuccess) {
+      refetch();
+      toast.success("User Deleted Successfully");
+    }
+  }, [isSuccess]);
+
+  const handleDeleteUser = async (id: string) => {
+    await deleteUser(id);
+  };
+
   const columns = [
     { field: "id", headerName: "ID", flex: 0.3 },
     { field: "name", headerName: "Name", flex: 0.5 },
@@ -31,7 +53,7 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
       renderCell: (params: any) => {
         return (
           <>
-            <Button>
+            <Button onClick={() => handleDeleteUser(params.row.id)}>
               <AiOutlineDelete
                 className='dark:text-white text-black'
                 size={20}
@@ -112,7 +134,7 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
           <div className='w-full flex justify-end'>
             <div
               className={`${styles.button} !h-[35px] !w-[200px] dark:bg-[#57c7a3] dark:border-[#ffffff6c]`}
-              onClick={() => setActive(!active)}>
+              onClick={() => setOpen(!open)}>
               Add New Member
             </div>
           </div>
@@ -186,6 +208,14 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
             />
           </Box>
         </Box>
+      )}
+
+      {open && (
+        <CustomModal
+          component={AddMemberModal}
+          open={open}
+          setOpen={setOpen}
+        />
       )}
     </div>
   );

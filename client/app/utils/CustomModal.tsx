@@ -4,7 +4,7 @@ import { Modal, Box } from "@mui/material";
 type Props = {
   open: boolean;
   setOpen: (open: boolean) => void;
-  activeItem: any;
+  activeItem?: any;
   component: any;
   setRoute?: (route: string) => void;
 };
@@ -20,7 +20,10 @@ const CustomModal: FC<Props> = ({
       onClose={() => setOpen(false)}
       area-labelledby='modal-modal-title'
       aria-describedby='modal-modal-description'>
-      <Box className='absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/3 w-[450px] bg-white dark:bg-slate-900 rounded-[8px] shadow p-4 outline-none'>
+      <Box
+        className={` ${
+          setRoute ? "w-[450px]" : "w-auto"
+        } absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/3  bg-white dark:bg-slate-900 rounded-[8px] shadow p-4 outline-none`}>
         <Component
           setOpen={setOpen}
           setRoute={setRoute}
