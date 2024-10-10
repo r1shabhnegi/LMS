@@ -31,7 +31,7 @@ type Props = { isDashboard?: boolean };
 //   { name: "Dec 2023", count: 423 },
 // ];
 
-const userAnalytics = ({ isDashboard }: Props) => {
+const UserAnalytics = ({ isDashboard }: Props) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { isLoading, data } = useGetUsersAnalyticsQuery({});
 
@@ -99,4 +99,4 @@ const userAnalytics = ({ isDashboard }: Props) => {
     </>
   );
 };
-export default userAnalytics;
+export default UserAnalytics;
