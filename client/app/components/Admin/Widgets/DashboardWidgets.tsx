@@ -63,8 +63,8 @@ const DashboardWidgets: FC<Props> = ({ open }) => {
               </div>
             </div>
           </div>
-          <br />
-          <div className='w-full dark:bg-[#111C43] rounded-sm shadow'>
+
+          <div className='w-full mt-3 dark:bg-[#111C43] rounded-sm shadow'>
             <div className='flex items-center p-5 justify-between'>
               <div>
                 <PiUsersFourLight className='dark:text-[#45CBA0] text-[#000] text-[30px]' />
