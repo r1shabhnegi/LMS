@@ -42,9 +42,9 @@ const CourseContent: FC<Props> = ({
     updatedData[index].links.splice(linkIndex, 1);
     setCourseContentData(updatedData);
   };
-
+  console.log(courseContentData);
   const handleAddLink = (index: number) => {
-    const updatedData = [...courseContentData];
+    const updatedData = JSON.parse(JSON.stringify(courseContentData));
     updatedData[index].links.push({ title: "", url: "" });
     setCourseContentData(updatedData);
   };
@@ -74,6 +74,7 @@ const CourseContent: FC<Props> = ({
         videoUrl: "",
         title: "",
         description: "",
+        videoLength: "",
         videoSection: newVideoSection,
         links: [{ title: "", url: "" }],
       };
@@ -98,6 +99,7 @@ const CourseContent: FC<Props> = ({
         videoUrl: "",
         title: "",
         description: "",
+        videoLength: "",
         videoSection: `Untitled Section ${activeSection}`,
         links: [{ title: "", url: "" }],
       };
@@ -123,6 +125,7 @@ const CourseContent: FC<Props> = ({
       handleCourseSubmit();
     }
   };
+  console.log(courseContentData);
 
   return (
     <div className='w-[80%] m-auto mt-24 p-3'>
@@ -149,7 +152,9 @@ const CourseContent: FC<Props> = ({
                         } font-Poppins cursor-pointer dark:text-white text-black bg-transparent outline-nones`}
                         value={item.videoSection}
                         onChange={(e) => {
-                          const updatedData = [...courseContentData];
+                          const updatedData = JSON.parse(
+                            JSON.stringify(courseContentData)
+                          );
                           updatedData[index].videoSection = e.target.value;
                           setCourseContentData(updatedData);
                         }}

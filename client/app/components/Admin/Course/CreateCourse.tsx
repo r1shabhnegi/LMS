@@ -4,7 +4,6 @@ import CourseInformation from "./CourseInformation";
 import CourseOptions from "./CourseOptions";
 import CourseData from "./CourseData";
 import CourseContent from "./CourseContent";
-import { Description } from "@mui/icons-material";
 import CoursePreview from "./CoursePreview";
 import { useCreateCourseMutation } from "@/redux/features/courses/coursesApi";
 import toast from "react-hot-toast";
@@ -24,9 +23,10 @@ const CreateCourse = (props: Props) => {
     demoUrl: "",
     thumbnail: "",
   });
+
   const [benefits, setBenefits] = useState([{ title: "" }]);
 
-  const [prerequisties, setPrerequisites] = useState([{ title: "" }]);
+  const [prerequisites, setPrerequisites] = useState([{ title: "" }]);
 
   const [courseContentData, setCourseContentData] = useState([
     {
@@ -47,6 +47,11 @@ const CreateCourse = (props: Props) => {
 
   const [courseData, setCourseData] = useState({});
 
+  // useEffect(() => {
+  //   console.log(active);
+  //   console.log(courseContentData);
+  // }, [active]);
+
   const handleSubmit = async () => {
     // Format benefits array
 
@@ -55,8 +60,8 @@ const CreateCourse = (props: Props) => {
     }));
 
     // Format prerequisites array
-    const formattedPrerequisites = prerequisties.map((prerequisties) => ({
-      title: prerequisties.title,
+    const formattedPrerequisites = prerequisites.map((prerequisites) => ({
+      title: prerequisites.title,
     }));
 
     // Format course content array
@@ -66,7 +71,7 @@ const CreateCourse = (props: Props) => {
         title: courseContent.title,
         description: courseContent.description,
         videoLength: courseContent.videoLength,
-        VideoSection: courseContent.videoSection,
+        videoSection: courseContent.videoSection,
         links: courseContent.links.map((link) => ({
           title: link.title,
           url: link.url,
@@ -74,7 +79,7 @@ const CreateCourse = (props: Props) => {
         suggestions: courseContent.suggestion,
       })
     );
-
+    console.log(formattedCourseContentData);
     // prepare our data object
 
     const data = {
@@ -86,9 +91,10 @@ const CreateCourse = (props: Props) => {
       thumbnail: courseInfo.thumbnail,
       level: courseInfo.level,
       demoUrl: courseInfo.demoUrl,
+      categories: courseInfo.categories,
       totalVideos: courseContentData.length,
       benefits: formattedBenefits,
-      prerequisties: formattedPrerequisites,
+      prerequisites: formattedPrerequisites,
       courseData: formattedCourseContentData,
     };
     setCourseData(data);
@@ -132,7 +138,7 @@ const CreateCourse = (props: Props) => {
           <CourseData
             benefits={benefits}
             setBenefits={setBenefits}
-            prerequisites={prerequisties}
+            prerequisites={prerequisites}
             setPrerequisites={setPrerequisites}
             active={active}
             setActive={setActive}

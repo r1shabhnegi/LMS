@@ -27,7 +27,6 @@ export const uploadCourse = CatchAsyncError(
           url: myCloud.secure_url,
         };
       }
-      console.log(data);
       createCourse(data, res, next);
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
@@ -41,6 +40,7 @@ export const editCourse = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = req.body;
+      console.log(data);
       const thumbnail = data.thumbnail;
 
       const courseId = req.params.id;
@@ -103,7 +103,6 @@ export const getSingleCourse = CatchAsyncError(
           "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
         );
         await redis.set(courseId, JSON.stringify(course), "EX", 604800); //7days expiry
-
         res.status(200).json({
           success: true,
           course,
@@ -466,6 +465,8 @@ export const generateVideoUrl = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { videoId } = req.body;
+
+      console.log(videoId);
       const response = await axios.post(
         `https://dev.vdocipher.com/api/videos/${videoId}/otp`,
         { ttl: 300 },

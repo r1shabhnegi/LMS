@@ -21,17 +21,22 @@ const CourseData: FC<Props> = ({
   setPrerequisites,
 }) => {
   const handleBenefitChange = (index: number, value: any) => {
-    const updatedBenefits = [...benefits];
+    // console.log("rishabh");
+    const updatedBenefits = benefits.map((benefit: any, i: number) =>
+      i === index ? { ...benefit, title: value } : benefit
+    ); // Deep clone
     updatedBenefits[index].title = value;
     setBenefits(updatedBenefits);
   };
-
   const handleAddBenefit = () => {
     setBenefits([...benefits, { title: "" }]);
   };
 
   const handlePrerequisitesChange = (index: number, value: any) => {
-    const updatedPrerequisites = [...prerequisites];
+    const updatedPrerequisites = prerequisites.map(
+      (prerequisite: any, i: number) =>
+        i === index ? { ...prerequisite, title: value } : prerequisite
+    );
     updatedPrerequisites[index].title = value;
     setPrerequisites(updatedPrerequisites);
   };
@@ -73,7 +78,9 @@ const CourseData: FC<Props> = ({
             required
             className={`${styles.input} my-2`}
             value={benefit.title}
-            onChange={(e) => handleBenefitChange(index, e.target.value)}
+            onChange={(e) => {
+              handleBenefitChange(index, e.target.value);
+            }}
           />
         ))}
         <AddCircle

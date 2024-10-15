@@ -172,10 +172,12 @@ const CourseInformation: FC<Props> = ({
                 name=''
                 id=''
                 className={`${styles.input}`}
-                value={courseInfo.Category}
-                onChange={(e: any) =>
-                  setCourseInfo({ ...courseInfo, category: e.target.value })
-                }>
+                value={courseInfo.categories}
+                onChange={(e: any) => {
+                  console.log("sd");
+                  setCourseInfo({ ...courseInfo, categories: e.target.value });
+                  console.log();
+                }}>
                 <option value=''>Select Category</option>
                 {categories.map((item: any) => (
                   <option

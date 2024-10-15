@@ -17,6 +17,7 @@ type Props = {
 };
 const EditCourse: FC<Props> = ({ id }) => {
   const [active, setActive] = useState(0);
+
   const [courseInfo, setCourseInfo] = useState({
     name: "",
     description: "",
@@ -30,7 +31,7 @@ const EditCourse: FC<Props> = ({ id }) => {
 
   const [benefits, setBenefits] = useState([{ title: "" }]);
 
-  const [prerequisties, setPrerequisites] = useState([{ title: "" }]);
+  const [prerequisites, setPrerequisites] = useState([{ title: "" }]);
 
   const [courseContentData, setCourseContentData] = useState([
     {
@@ -38,6 +39,7 @@ const EditCourse: FC<Props> = ({ id }) => {
       title: "",
       description: "",
       videoSection: "Untitled Section",
+      videoLength: "",
       links: [
         {
           title: "",
@@ -56,7 +58,6 @@ const EditCourse: FC<Props> = ({ id }) => {
   );
 
   const editCourseData = data && data.courses.find((i: any) => i._id === id);
-  console.log(editCourseData);
 
   useEffect(() => {
     if (editCourseData) {
@@ -80,9 +81,7 @@ const EditCourse: FC<Props> = ({ id }) => {
   const [editCourse, { error, isSuccess }] = useEditCourseMutation();
 
   const handleEditCourse = async () => {
-    console.log(editCourseData);
-    const data = courseData;
-    await editCourse({ id: editCourseData?._id, data });
+    await editCourse({ id: editCourseData?._id, data: courseData });
   };
 
   useEffect(() => {
@@ -106,8 +105,8 @@ const EditCourse: FC<Props> = ({ id }) => {
     }));
 
     // Format prerequisites array
-    const formattedPrerequisites = prerequisties.map((prerequisties) => ({
-      title: prerequisties.title,
+    const formattedPrerequisites = prerequisites.map((prerequisites) => ({
+      title: prerequisites.title,
     }));
 
     // Format course content array
@@ -116,7 +115,8 @@ const EditCourse: FC<Props> = ({ id }) => {
         videoUrl: courseContent.videoUrl,
         title: courseContent.title,
         description: courseContent.description,
-        VideoSection: courseContent.videoSection,
+        videoLength: courseContent.videoLength,
+        videoSection: courseContent.videoSection,
         links: courseContent.links.map((link) => ({
           title: link.title,
           url: link.url,
@@ -124,7 +124,6 @@ const EditCourse: FC<Props> = ({ id }) => {
         suggestions: courseContent.suggestion,
       })
     );
-
     // prepare our data object
 
     const data = {
@@ -138,11 +137,15 @@ const EditCourse: FC<Props> = ({ id }) => {
       demoUrl: courseInfo.demoUrl,
       totalVideos: courseContentData.length,
       benefits: formattedBenefits,
-      prerequisties: formattedPrerequisites,
+      prerequisites: formattedPrerequisites,
       courseData: formattedCourseContentData,
     };
     setCourseData(data);
   };
+
+  useEffect(() => {
+    console.log(courseContentData);
+  }, [active]);
 
   return (
     <div className='w-full flex min-h-screen'>
@@ -159,7 +162,7 @@ const EditCourse: FC<Props> = ({ id }) => {
           <CourseData
             benefits={benefits}
             setBenefits={setBenefits}
-            prerequisites={prerequisties}
+            prerequisites={prerequisites}
             setPrerequisites={setPrerequisites}
             active={active}
             setActive={setActive}
