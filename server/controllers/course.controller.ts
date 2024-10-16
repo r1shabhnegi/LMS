@@ -329,7 +329,7 @@ export const addReview = CatchAsyncError(
 
       // check if courseId already in userCourseList based on _id
       const courseExist = userCourseList?.some(
-        (course: any) => course._id.toString() === courseId.toString()
+        (course: any) => course.courseId.toString() === courseId.toString()
       );
 
       if (!courseExist) {
@@ -360,12 +360,12 @@ export const addReview = CatchAsyncError(
 
       await course?.save();
 
-      const notification = {
+      //  create notification
+      await NotificationModel.create({
+        user: req.user?._id,
         title: "New Review Received",
         message: `${req.user?.name} jas given a review in ${course?.name}`,
-      };
-
-      //  create notification
+      });
 
       res.status(200).json({ success: true, course });
     } catch (error: any) {
@@ -413,6 +413,8 @@ export const addReplyToReview = CatchAsyncError(
       review.commentReplies?.push(replyData);
 
       await course.save();
+
+      await redis.set(courseId, JSON.stringify(course), "EX", 604800); //7days
 
       res.status(200).json({
         success: true,

@@ -33,7 +33,7 @@ const AllInvoices: FC<Props> = ({ isDashboard }) => {
           ...item,
           userName: user?.name,
           userEmail: user?.email,
-          title: course.name,
+          title: course?.name,
           price: "$" + course?.price,
         };
       });
