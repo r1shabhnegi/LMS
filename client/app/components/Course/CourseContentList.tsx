@@ -15,8 +15,6 @@ const CourseContentList: FC<Props> = ({
   isDemo,
   setActiveVideo,
 }) => {
-  console.log(data);
-
   const [visibleSections, setVisibleSections] = useState<Set<string>>(
     new Set<string>()
   );
@@ -27,7 +25,6 @@ const CourseContentList: FC<Props> = ({
   const videoSection: string[] = Array.from(
     new Set<string>(data?.map((item: any) => item.videoSection) ?? [])
   );
-  console.log(videoSection);
 
   const toggleSection = (section: string) => {
     const newVisibleSections = new Set(visibleSections);

@@ -9,13 +9,14 @@ import ejs from "ejs";
 import sendMail from "../utils/sendMails";
 import NotificationModel from "../models/notification.model";
 import { getAllOrdersService, newOrder } from "../services/order.service";
+import { redis } from "../utils/redis";
 
 // create order
 export const createOrder = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     console.log("called");
     try {
-      const { courseId, payment_info } = req.body as IOrder;
+      const { courseId } = req.body;
       const user = await userModel.findById(req.user?._id);
 
       const courseExistInUser = user?.courses.some(
@@ -37,7 +38,6 @@ export const createOrder = CatchAsyncError(
       const data: any = {
         courseId: course._id,
         userId: user?._id,
-        payment_info,
       };
 
       const mailData: any = {
@@ -84,6 +84,9 @@ export const createOrder = CatchAsyncError(
         message: `You have a new order from ${course?.name}`,
       });
 
+      const userId = req.user?._id || "";
+      await redis.del(userId);
+
       newOrder(data, res, next);
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
@@ -99,5 +102,15 @@ export const getAllOrders = CatchAsyncError(
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
     }
+  }
+);
+
+// send stripe publishable key
+
+export const sendStripePublishableKey = CatchAsyncError(
+  async (req: Request, res: Response) => {
+    res.status(200).json({
+      publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
+    });
   }
 );

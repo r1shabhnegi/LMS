@@ -152,7 +152,7 @@ export const getCourseByUser = CatchAsyncError(
       const courseId = req.params.id;
 
       const courseExist = userCourseList?.find(
-        (course: any) => course._id.toString() === courseId
+        (course: any) => course.courseId.toString() === courseId
       );
 
       if (!courseExist) {
@@ -263,6 +263,8 @@ export const addAnswer = CatchAsyncError(
       const newAnswer: any = {
         user: req.user,
         answer,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
 
       // add this answer to out course content
@@ -402,6 +404,8 @@ export const addReplyToReview = CatchAsyncError(
       const replyData: any = {
         user: req.user,
         comment,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
       if (!review.commentReplies) {
         review.commentReplies = [];

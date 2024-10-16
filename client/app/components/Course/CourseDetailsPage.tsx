@@ -9,7 +9,6 @@ type Props = {
   id: string;
 };
 const CourseDetailsPage = ({ id }: Props) => {
-  console.log(id);
   const [route, setRoute] = useState("Login");
   const [open, setOpen] = useState(false);
   const { data, isLoading } = useGetCourseDetailsQuery(id);

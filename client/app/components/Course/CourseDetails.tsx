@@ -2,14 +2,39 @@ import { styles } from "@/app/styles/style";
 import CoursePlayer from "@/app/utils/CoursePlayer";
 import Ratings from "@/app/utils/Ratings";
 import Link from "next/link";
-import { IoCheckmarkDoneOutline } from "react-icons/io5";
+import { IoCheckmarkDoneOutline, IoCloseOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import { format } from "timeago.js";
 import CourseContentList from "../Course/CourseContentList";
+import { useEffect, useState } from "react";
+import { useCreateOrderMutation } from "@/redux/features/orders/ordersApi";
+import toast from "react-hot-toast";
+import { redirect } from "next/navigation";
+import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 
 type Props = { data: any };
 const CourseDetails = ({ data }: Props) => {
-  const { user } = useSelector((state: any) => state.auth);
+  const [open, setOpen] = useState(false);
+
+  const { data: userData } = useLoadUserQuery(undefined, {});
+  const user = userData?.user;
+
+  const [createOrder, { isSuccess, error }] = useCreateOrderMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Course Purchased Successfully!");
+      setOpen(!open);
+      redirect(`/course-access/${data?._id}`);
+    }
+    if (error) {
+      if ("data" in error) {
+        const errorMsg = error as any;
+        toast.error(errorMsg.data.message);
+      }
+    }
+  }, [isSuccess, error]);
+
   const discountPercentage =
     data?.estimatedPrice && data?.estimatedPrice !== 0
       ? ((data.estimatedPrice - data?.price) / data.estimatedPrice) * 100
@@ -18,13 +43,15 @@ const CourseDetails = ({ data }: Props) => {
   const discountPercentagePrice = discountPercentage.toFixed(2);
 
   const isPurchased =
-    user && user?.courses?.find((item: any) => item._id === data._id);
+    user && user?.courses?.find((item: any) => item.courseId === data._id);
 
   const handleOrder = (e: any) => {
-    console.log("ggg");
+    setOpen(!open);
   };
-
-  console.log(data.courseData);
+  // console.log(data);/
+  const handlePayment = async () => {
+    await createOrder({ courseId: data._id });
+  };
 
   return (
     <div>
@@ -210,6 +237,53 @@ const CourseDetails = ({ data }: Props) => {
           </div>
         </div>
       </div>
+      <>
+        {open && (
+          <div className='w-full h-screen bg-[#00000036] fixed top-0 left-0 z-50 flex items-center justify-center'>
+            <div className='w-[500px] h-min bg-white rounded-xl shadow p-3'>
+              <div className='w-full flex justify-end'>
+                <IoCloseOutline
+                  size={40}
+                  className='text-black cursor-pointer'
+                  onClick={() => setOpen(false)}
+                />
+              </div>
+
+              <br />
+              <div className='flex flex-col'>
+                <div>
+                  <h1 className='text-black font-semibold !text-xl'>
+                    {data.name}
+                  </h1>
+                  <br />
+                  <p className='pb-1 ml-2 text-black'>• Source code included</p>
+                  <p className='pb-1 ml-2 text-black'>• Full lifetime access</p>
+                  <p className='pb-1 ml-2 text-black'>
+                    • Certificate of completion
+                  </p>
+                  <p className='pb-3 ml-2 800px:pb-1 text-black'>
+                    • Premium Support
+                  </p>
+                </div>
+                <br />
+                <br />
+                <div className='text-black items-center flex justify-between'>
+                  <div>
+                    <h1 className={`${styles.label} !text-black !text-xl`}>
+                      Total price - {data.estimatedPrice}$
+                    </h1>
+                  </div>
+                  <button
+                    className={`${styles.button} !w-max`}
+                    onClick={handlePayment}>
+                    Confirm Payment
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </>
     </div>
   );
 };
