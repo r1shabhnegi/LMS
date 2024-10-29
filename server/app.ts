@@ -10,6 +10,8 @@ import orderRouter from "./routes/order.route";
 import notificationRouter from "./routes/notification.route";
 import analyticsRouter from "./routes/analytics.route";
 import layoutRouter from "./routes/layout.route";
+import { rateLimit } from "express-rate-limit";
+
 // body parser
 app.use(express.json({ limit: "1000mb" }));
 // app.use(express.json({}));
@@ -19,6 +21,14 @@ app.use(cookieParser());
 
 // cors (cross origin resource sharing)
 app.use(cors({ origin: ["http://localhost:3000"], credentials: true }));
+
+// rate limiter
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, //15min
+  max: 100,
+  standardHeaders: "draft-7",
+  legacyHeaders: false,
+});
 
 // routes
 app.use(
@@ -48,5 +58,5 @@ app.all("*", (req: Request, res: Response, next: NextFunction) => {
   err.statusCode = 404;
   next(err);
 });
-
+app.use(limiter);
 app.use(ErrorMiddleware);

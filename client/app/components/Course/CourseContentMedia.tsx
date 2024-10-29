@@ -23,6 +23,10 @@ import { Key } from "@mui/icons-material";
 import { format } from "timeago.js";
 import { BiMessage } from "react-icons/bi";
 import Ratings from "@/app/utils/Ratings";
+import socketIO from "socket.io-client";
+
+const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "";
+const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
 
 type Props = {
   data: any;
@@ -96,12 +100,25 @@ const CourseContentMedia = ({
     if (isSuccess) {
       toast.success("Question added successfully!");
       refetch();
+
+      socketId.emit("notification", {
+        title: "New Question Received",
+        message: `You have a new question in ${data[activeVideo].title}`,
+        userId: user._id,
+      });
       setQuestion("");
     }
     if (answerSuccess) {
       toast.success("Answer added successfully!");
       refetch();
       setAnswer("");
+      if (user.role !== "admin") {
+        socketId.emit("notification", {
+          title: "New Reply Received",
+          message: `You have a new question reply in ${data[activeVideo].title}`,
+          userId: user._id,
+        });
+      }
     }
     if (error) {
       if ("data" in error) {
@@ -120,6 +137,12 @@ const CourseContentMedia = ({
       toast.success("Review added successfully!");
       courseRefetch();
       setReview("");
+      setRating(1);
+      socketId.emit("notification", {
+        title: "New Question Received",
+        message: `You have a new question in ${data[activeVideo].title}`,
+        userId: user._id,
+      });
     }
 
     if (reviewError) {
@@ -389,7 +412,9 @@ const CourseContentMedia = ({
             <div className='w-full'>
               {(course?.reviews && [...course.reviews].reverse())?.map(
                 (item: any, index: number) => (
-                  <div className='w-full my-5 dark:text-white text-black'>
+                  <div
+                    className='w-full my-5 dark:text-white text-black'
+                    key={index + item?.user.name}>
                     <div className='w-full flex'>
                       <Image
                         src={user.avatar ? user.avatar.url : avatar}
@@ -434,7 +459,9 @@ const CourseContentMedia = ({
                       </div>
                     )}
                     {item.commentReplies.map((i: any, index: number) => (
-                      <div className='w-full flex 800px:ml-16 my-5'>
+                      <div
+                        key={index}
+                        className='w-full flex 800px:ml-16 my-5'>
                         <div className='w-[50px] h-[50px]'>
                           <Image
                             src={i.user.avatar ? i.user.avatar.url : avatar}
@@ -564,7 +591,9 @@ const CommentItem = ({
         {replyActive && (
           <>
             {item.questionReplies.map((item: any) => (
-              <div className='w-full flex 800px:ml-16 my-5 text-black dark:text-white'>
+              <div
+                key={item + Math.random() + 100}
+                className='w-full flex 800px:ml-16 my-5 text-black dark:text-white'>
                 <div>
                   <Image
                     src={item.user.avatar ? item.user.avatar.url : avatar}

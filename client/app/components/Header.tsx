@@ -24,11 +24,17 @@ import {
   useSocialAuthMutation,
 } from "@/redux/features/auth/authApi";
 import toast from "react-hot-toast";
+import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 
 const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
   const [openSidebar, setOpenSidebar] = useState(false);
   const [active, setActive] = useState(false);
-  const { user } = useSelector((state: any) => state.auth);
+  // const { user } = useSelector((state: any) => state.auth);
+  const {
+    data: userData,
+    isLoading,
+    refetch,
+  } = useLoadUserQuery(undefined, {});
   const { data } = useSession();
 
   const [socialAuth, { isSuccess, error }] = useSocialAuthMutation();
@@ -37,22 +43,24 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
   const {} = useLogoutQuery(undefined, { skip: !logout ? true : false });
 
   useEffect(() => {
-    if (!user) {
-      if (data) {
-        socialAuth({
-          email: data.user?.email,
-          name: data.user?.name,
-          avatar: data.user?.image,
-        });
+    if (!isLoading) {
+      if (!userData) {
+        if (data) {
+          socialAuth({
+            email: data.user?.email,
+            name: data.user?.name,
+            avatar: data.user?.image,
+          });
+        }
       }
     }
-    if (data === null || isSuccess) {
+    if (data === null) {
       toast.success("Login Successfully");
     }
-    if (data === null) {
+    if (data === null && !isLoading && !userData) {
       setLogout(true);
     }
-  }, [data, user]);
+  }, [data, userData, isLoading]);
 
   if (typeof window !== "undefined") {
     window.addEventListener("scroll", () => {
@@ -74,8 +82,8 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
       <div
         className={`${
           active
-            ? "dark:bg-opacity-50 dark:bg-gradient-to-b dark:from-gray-900 dark:to-black fixed top-0 left-0 w-full h-[80px] z-[80] border-b dark:border-[#ffffff1c] shadow-xl transition duration-500"
-            : "w-full border-b dark:border-[#ffffff1c] h-[80px] z-[80] dark:shadow"
+            ? "dark:bg-[#2a2a2a] border-b  dark:border-[#686868ce] fixed top-0 left-0 w-full h-[80px] z-[80]  shadow-xl transition duration-500"
+            : "w-full border-b dark:bg-[#2a2a2a] dark:border-[#686868ce] h-[80px] z-[80] dark:shadow"
         }`}>
         <div className='w-[95%] 800px:w-[92%] m-auto py-2 h-full'>
           <div className='w-full h-[80px] flex items-center justify-between p-3'>
@@ -83,7 +91,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
               <Link
                 href={"/"}
                 className={`text-[25px] font-Poppins font-[500] text-black dark:text-white`}>
-                ELearing
+                LearnNow
               </Link>
             </div>
             <div className='flex items-center'>
@@ -100,10 +108,10 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
                   onClick={() => setOpenSidebar(true)}
                 />
               </div>
-              {user ? (
+              {userData ? (
                 <Link href={"/profile"}>
                   <Image
-                    src={user.avatar ? user.avatar.url : avatar}
+                    src={userData.avatar ? userData.avatar.url : avatar}
                     alt=''
                     width={30}
                     height={30}
@@ -157,6 +165,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
               setRoute={setRoute}
               activeItem={activeItem}
               component={Login}
+              refetch={refetch}
             />
           )}
         </>

@@ -20,8 +20,8 @@ const CourseDetailsPage = ({ id }: Props) => {
       ) : (
         <div>
           <Heading
-            title={data?.course.name + " - ELearning"}
-            description='ELearning is a programming community which is developed by Rishabh Negi for helping programmers'
+            title={data?.course.name + " - LearnNow"}
+            description='LearnNow is a programming community which is developed by Rishabh Negi for helping programmers'
             keywords={data?.course.tags}
           />
           <Header
@@ -31,7 +31,11 @@ const CourseDetailsPage = ({ id }: Props) => {
             setOpen={setOpen}
             activeItem={1}
           />
-          <CourseDetails data={data.course} />
+          <CourseDetails
+            data={data.course}
+            setRoute={setRoute}
+            setOpen={setOpen}
+          />
         </div>
       )}
     </>

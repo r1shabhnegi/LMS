@@ -61,7 +61,7 @@ const SignUp: FC<Props> = ({ setRoute }) => {
 
   return (
     <div className='w-full'>
-      <h1 className={`${styles.title}`}>join to ELearning</h1>
+      <h1 className={`${styles.title}`}>join to LearnNow</h1>
       <form onSubmit={handleSubmit}>
         <div className='mb-3'>
           <label className={`${styles.label}`}>Enter your Name</label>

@@ -135,7 +135,7 @@ const AllCourses = () => {
 
               "& .MuiDataGrid-row--borderBottom": {
                 background:
-                  theme === "dark" ? "#3E4396!important" : "#A4A9FC!important",
+                  theme === "dark" ? "#424242!important" : "#A4A9FC!important",
               },
 
               "& .MuiDataGrid-row": {
@@ -157,16 +157,16 @@ const AllCourses = () => {
               },
 
               "& .MuiDataGrid-columnHeaders": {
-                backgroundColor: theme === "dark" ? "#3e4396" : "#a4a9fc",
+                backgroundColor: theme === "dark" ? "#424242" : "#a4a9fc",
                 BorderBottom: "none",
                 color: theme === "dark" ? "#fff" : "#000",
               },
               "& .MuiDataGrid-virtualScroller": {
-                backgroundColor: theme === "dark" ? "#1f2a40" : "#f2f0f0",
+                backgroundColor: theme === "dark" ? "#202020" : "#f2f0f0",
               },
 
               "& .MuiDataGrid-footerContainer": {
-                backgroundColor: theme === "dark" ? "#3e4396" : "#a4a9fc",
+                backgroundColor: theme === "dark" ? "#424242" : "#a4a9fc",
                 borderTop: "none",
                 color: theme === "dark" ? "#fff" : "#000",
               },

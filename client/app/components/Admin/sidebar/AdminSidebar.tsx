@@ -69,7 +69,7 @@ const Sidebar = () => {
       sx={{
         "& .pro-sidebar-inner": {
           background: `${
-            theme === "dark" ? "#111C43 !important" : " #fff !important"
+            theme === "dark" ? "#202020 !important" : " #fff !important"
           }`,
         },
         "& .pro-icon-wrapper": {
@@ -88,7 +88,7 @@ const Sidebar = () => {
           color: `${theme !== "dark" && "#000"}`,
         },
       }}
-      className='!bg-white dark:bg-[#111C43]'>
+      className='!bg-white dark:bg-[#202020] z-[999999]'>
       <ProSidebar
         collapsed={isCollapsed}
         style={{
@@ -112,7 +112,7 @@ const Sidebar = () => {
                 ml='15px'>
                 <Link href='/'>
                   <h3 className='text-[25px] font-Poppins uppercase dark:text-white text-black'>
-                    ELearning
+                    LearnNow
                   </h3>
                 </Link>
                 <IconButton
@@ -131,14 +131,15 @@ const Sidebar = () => {
                 justifyContent='center'
                 alignItems='center'>
                 <Image
-                  alt=''
                   width={100}
-                  height={100}
+                  height={0}
                   src={user.avatar ? user.avatar.url : avatarDefault}
+                  className='rounded-full object-contain'
+                  alt=''
                   style={{
                     cursor: "pointer",
-                    borderRadius: "50%",
-                    border: "3px solid #5b6fe6",
+                    // borderRadius: "100%",
+                    border: "2px solid #5b6fe6",
                   }}
                 />
               </Box>

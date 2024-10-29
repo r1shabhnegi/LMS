@@ -19,7 +19,7 @@ const Page: FC<Props> = () => {
     <>
       <Heading
         title='ELearing'
-        description='ELearning is a platform for students to learn and get help from teachers'
+        description='LearnNow is a platform for students to learn and get help from teachers'
         keywords='programming, MERN, Redux, Machine Learning'
       />
       <Header

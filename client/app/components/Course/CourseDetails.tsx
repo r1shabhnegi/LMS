@@ -13,13 +13,20 @@ import { redirect } from "next/navigation";
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 import Image from "next/image";
 import { MdVerified } from "react-icons/md";
+import socketIO from "socket.io-client";
 
-type Props = { data: any };
-const CourseDetails = ({ data }: Props) => {
+const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "";
+const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
+
+type Props = { data: any; setRoute: any; setOpen: any };
+const CourseDetails = ({ data, setOpen: openAuthModel, setRoute }: Props) => {
   const [open, setOpen] = useState(false);
-
+  const [user, setUser] = useState<any>();
   const { data: userData } = useLoadUserQuery(undefined, {});
-  const user = userData?.user;
+
+  useEffect(() => {
+    setUser(userData?.user);
+  }, [userData]);
 
   const [createOrder, { isSuccess, error }] = useCreateOrderMutation();
 
@@ -27,6 +34,11 @@ const CourseDetails = ({ data }: Props) => {
     if (isSuccess) {
       toast.success("Course Purchased Successfully!");
       setOpen(!open);
+      socketId.emit("notification", {
+        title: "New Order",
+        message: `You have a new order from ${data.name}`,
+        userId: userData._id,
+      });
       redirect(`/course-access/${data?._id}`);
     }
     if (error) {
@@ -48,7 +60,12 @@ const CourseDetails = ({ data }: Props) => {
     user && user?.courses?.find((item: any) => item.courseId === data._id);
 
   const handleOrder = (e: any) => {
-    setOpen(!open);
+    if (user) {
+      setOpen(!open);
+    } else {
+      setRoute("Login");
+      openAuthModel(true);
+    }
   };
   // console.log(data);/
   const handlePayment = async () => {
@@ -188,7 +205,9 @@ const CourseDetails = ({ data }: Props) => {
                       </div>
                     </div>
                     {item.commentReplies.map((i: any, index: number) => (
-                      <div className='w-full flex 800px:ml-16 my-5'>
+                      <div
+                        key={index + i.comment}
+                        className='w-full flex 800px:ml-16 my-5'>
                         <div className='w-[50px] h-[50px]'>
                           <Image
                             src={i.user.avatar ? i.user.avatar.url : avatar}

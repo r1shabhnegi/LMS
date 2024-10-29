@@ -63,7 +63,7 @@ const EditHero: FC<Props> = (props: Props) => {
     <div className='w-full 1000px:flex items-center'>
       <div className='absolute top-[100px] 1000px:top-[unset] 1500px:h-[700px] 1500px:w-[700px] 1100px:h-[500px] 1100px:w-[500px] h-[50vh] w-[50vh] hero_animation rounded-[50%] 1100px:left-[18rem] 1500px:left-[21rem]'></div>
       <div className='1000px:w-[40%] flex 1000px:min-h-screen items-center justify-end pt-[70px] 1000px:pt-[0] z-10'>
-        <div className='relative flex items-center justify-end'>
+        <div className='relative lg:mb-5 lg:mr-4 flex items-center justify-end'>
           <img
             src={image}
             alt=''
@@ -84,9 +84,9 @@ const EditHero: FC<Props> = (props: Props) => {
           </label>
         </div>
       </div>
-      <div className='1000px:w-[60%] flex flex-col items-center 1000px:mt-[0px] text-center 1000px:text-left mt-[150px]'>
+      <div className='1000px:w-[60%] flex flex-col items-center 1000px:mt-[0px] text-center 1000px:text-left mt-[150px] mr-2'>
         <textarea
-          className='dark:text-white resize-none text-[#000000c7] text-[30px] px-3 w-full 1000px:text-[60px] 1500px:text-[70px] font-[60px]'
+          className='rounded-lg dark:bg-neutral-700 dark:text-white resize-none text-[#000000c7] text-[30px] px-3 w-full 1000px:text-[60px] 1500px:text-[70px] font-[60px]'
           placeholder='Improve Your Online Learning Experience Better Instantly'
           id=''
           value={title}
@@ -98,7 +98,7 @@ const EditHero: FC<Props> = (props: Props) => {
           value={subTitle}
           onChange={(e) => setSubTitle(e.target.value)}
           placeholder='We have 40k+ Online courses & Online registered student. Find your desired Courses from them.'
-          className='dark:text-[#edfff4] text-[#000000ac] font-Josefin font-[600] text-[18px] 1500px:!w-[50%] 1100px:!w-[74%] bg-transparent'
+          className='dark:text-[#edfff4] dark:bg-neutral-700 p-2 rounded-md text-[#000000ac] font-Josefin font-[600] text-[18px] 1500px:!w-[50%] 1100px:!w-[74%] bg-transparent'
           id=''
         />
         <br />

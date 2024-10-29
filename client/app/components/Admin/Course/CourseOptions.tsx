@@ -21,13 +21,13 @@ const CourseOptions: FC<Props> = ({ active, setActive }) => {
           className={`w-full flex py-5`}>
           <div
             className={`w-[35px] h-[35px] rounded-full flex items-center justify-center ${
-              active + 1 > index ? "bg-blue-500" : "bg-[#384766]"
+              active + 1 > index ? "bg-blue-500" : "bg-[#424242]"
             } relative`}>
             <IoMdCheckmark className='text-[25px]' />
             {index !== options.length - 1 && (
               <div
                 className={`absolute h-[30px] w-1 ${
-                  active + 1 > index ? "bg-blue-500" : "bg-[#384766]"
+                  active + 1 > index ? "bg-blue-500" : "bg-[#424242]"
                 } bottom-[-100%]`}
               />
             )}

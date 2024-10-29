@@ -6,7 +6,7 @@ import Heading from "@/app/utils/Heading";
 import React from "react";
 import AdminSidebar from "@/app/components/Admin/sidebar/AdminSidebar";
 
-import UserAnalytics from "@/app/components/Admin/Analytics/userAnalytics";
+import UserAnalytics from "@/app/components/Admin/Analytics/UserAnalytics";
 type Props = {};
 const Page = (props: Props) => {
   return (
@@ -14,7 +14,7 @@ const Page = (props: Props) => {
       <AdminProtected>
         <Heading
           title='ELearing - Admin'
-          description='ELearning is a platform for students to learn and get help from teachers'
+          description='LearnNow is a platform for students to learn and get help from teachers'
           keywords='programming, MERN, Redux, Machine Learning'
         />
         <div className='flex h-screen'>
