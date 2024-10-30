@@ -1,6 +1,5 @@
 "use client";
 
-import Header from "../components/Header";
 import Heading from "../utils/Heading";
 import AdminSidebar from "../components/Admin/sidebar/AdminSidebar";
 import AdminProtected from "../hooks/adminProtected";

@@ -18,13 +18,11 @@ import {
   QuizIcon,
   WysiwygIcon,
   ManageHistoryIcon,
-  SettingsIcon,
-  ExitToAppIcon,
 } from "./Icons";
 
 import "react-pro-sidebar/dist/css/styles.css";
 import avatarDefault from "@/public/assets/avatar.png";
-import { useSelector, UseSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Link from "next/link";
 import Image from "next/image";
 import { useTheme } from "next-themes";

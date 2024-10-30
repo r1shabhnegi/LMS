@@ -1,6 +1,5 @@
 import { useGetHeroDataQuery } from "@/redux/features/layout/layoutApi";
 import { useEffect, useState } from "react";
-import Loader from "../Loader/Loader";
 import { styles } from "@/app/styles/style";
 import { HiMinus, HiPlus } from "react-icons/hi";
 

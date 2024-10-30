@@ -3,7 +3,6 @@ import {
   useGetAllUsersQuery,
   useUpdateUserMutation,
 } from "@/redux/features/user/userApi";
-import e from "express";
 import { FC, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 

@@ -1,4 +1,4 @@
-import react, { FC } from "react";
+import  { FC } from "react";
 import { IoMdCheckmark } from "react-icons/io";
 
 type Props = {

@@ -10,7 +10,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import Loader from "@/app/components/Loader/Loader";
-import { useEffect } from "react";
 import { styles } from "@/app/styles/style";
 
 // const analyticsData = [

@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 import { useTheme } from "next-themes";
 import { useGetAllCoursesAdminQuery } from "@/redux/features/courses/coursesApi";

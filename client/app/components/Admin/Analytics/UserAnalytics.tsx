@@ -1,12 +1,8 @@
 import { useGetUsersAnalyticsQuery } from "@/redux/features/analytics/analyticsApi";
 import {
-  BarChart,
-  Bar,
   ResponsiveContainer,
   XAxis,
-  Label,
   YAxis,
-  LabelList,
   AreaChart,
   Tooltip,
   Area,

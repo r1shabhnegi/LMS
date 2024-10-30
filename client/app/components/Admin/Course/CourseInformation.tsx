@@ -1,7 +1,6 @@
 import { styles } from "@/app/styles/style";
 import { useGetHeroDataQuery } from "@/redux/features/layout/layoutApi";
-import { EventType } from "next-auth";
-import { EventHandler, FC, useEffect, useState } from "react";
+import {  FC, useEffect, useState } from "react";
 
 type Props = {
   courseInfo: any;

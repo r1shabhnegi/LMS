@@ -3,7 +3,6 @@ import {
   useEditLayoutMutation,
   useGetHeroDataQuery,
 } from "@/redux/features/layout/layoutApi";
-import Image from "next/image";
 import { FC, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineCamera } from "react-icons/ai";

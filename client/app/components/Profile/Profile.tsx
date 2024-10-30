@@ -3,7 +3,6 @@ import { FC, useState } from "react";
 import SideBarProfile from "./SideBarProfile";
 import { useLogoutQuery } from "@/redux/features/auth/authApi";
 import { signOut } from "next-auth/react";
-import { redirect } from "next/navigation";
 import ProfileInfo from "./ProfileInfo";
 import ChangePassword from "./ChangePassword";
 
