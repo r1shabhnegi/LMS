@@ -20,7 +20,12 @@ app.use(express.json({ limit: "1000mb" }));
 app.use(cookieParser());
 
 // cors (cross origin resource sharing)
-app.use(cors({ origin: ["http://localhost:3000"], credentials: true }));
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://lms-learn-now-max.vercel.app"],
+    credentials: true,
+  })
+);
 
 // rate limiter
 const limiter = rateLimit({
