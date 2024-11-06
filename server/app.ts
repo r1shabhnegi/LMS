@@ -23,7 +23,7 @@ app.use(cookieParser());
 // cors (cross origin resource sharing)
 app.use(
   cors({
-    origin: ["https://learnmaxnow.vercel.app"],
+    origin: ["http://localhost:3000", "https://learnmaxnow.vercel.app"],
     credentials: true,
   })
 );
