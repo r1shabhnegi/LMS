@@ -23,7 +23,7 @@ app.use(cookieParser());
 // cors (cross origin resource sharing)
 app.use(
   cors({
-    origin: "*",
+    origin: "https://lms-two-omega.vercel.app",
     credentials: true,
   })
 );
