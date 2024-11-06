@@ -11,6 +11,7 @@ import notificationRouter from "./routes/notification.route";
 import analyticsRouter from "./routes/analytics.route";
 import layoutRouter from "./routes/layout.route";
 import { rateLimit } from "express-rate-limit";
+import { responseEncoding } from "axios";
 
 // body parser
 app.use(express.json({ limit: "1000mb" }));
@@ -33,6 +34,10 @@ const limiter = rateLimit({
   max: 100,
   standardHeaders: "draft-7",
   legacyHeaders: false,
+});
+
+app.get("/", (req: Request, res: Response) => {
+  res.json({ success: true, message: "server is running" });
 });
 
 // routes

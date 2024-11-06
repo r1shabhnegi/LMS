@@ -195,17 +195,21 @@ export const updateAccessToken = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const refresh_token = req.cookies.refresh_token;
+      console.log("refresh--", refresh_token);
+
       if (!refresh_token) {
         return next(new ErrorHandler("Refresh token not provided", 400));
       }
 
       const refreshSecret = process.env.REFRESH_TOKEN;
       const accessSecret = process.env.ACCESS_TOKEN;
+
       if (!refreshSecret || !accessSecret) {
         return next(new ErrorHandler("Server configuration error", 500));
       }
 
-      let decoded: JwtPayload;
+      let decoded;
+
       try {
         decoded = jwt.verify(refresh_token, refreshSecret) as JwtPayload;
       } catch (error) {
@@ -231,9 +235,14 @@ export const updateAccessToken = CatchAsyncError(
       res.cookie("refresh_token", refreshToken, refreshTokenOptions);
 
       // Update Redis session
-      await redis.set(user._id, JSON.stringify(user), "EX", 259200); // 3 days
+      try {
+        await redis.set(user._id, JSON.stringify(user), "EX", 259200); // 3days
+      } catch (error) {
+        return next(new ErrorHandler("Failed to update session", 500));
+      }
 
       req.user = user;
+
       next();
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 400));
